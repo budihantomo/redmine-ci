@@ -30,4 +30,10 @@ class My extends CI_Controller
 	{
 		echo 'my page';
 	}
+
+	/**
+	 */
+	public function page_layout()
+	{
+	}
 }

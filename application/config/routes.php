@@ -41,12 +41,26 @@
 $route['default_controller'] = "welcome";
 $route['404_override'] = '';
 
-// Account-related stuff belongs in class account
-$route['login'] = 'account/login';
-$route['logout'] = 'account/logout';
-$route['my/account'] = 'account/overview';
-$route['my/password'] = 'account/change_password';
+// Redmine compatibility routes
+
+// Account-related routes belong in account class
+$route['login']            = 'account/login';
+$route['logout']           = 'account/logout';
+$route['my/account']       = 'account/overview';
+$route['my/password']      = 'account/change_password';
 $route['my/reset_rss_key'] = 'account/reset_rss_key';
+
+// Same for admin related routes
+$route['users']             = 'admin/users';
+$route['groups']            = 'admin/groups';
+$route['roles']             = 'admin/roles';
+$route['trackers']          = 'admin/trackers';
+$route['issue_statuses']    = 'admin/issue_statuses';
+$route['workflows']         = 'admin/workflows';
+$route['custom_fields']     = 'admin/custom_fields';
+$route['enumarations']      = 'admin/enumarations';
+$route['settings']          = 'admin/settings';
+$route['ldap_auth_sources'] = 'admin/ldap_auth_sources';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

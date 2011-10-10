@@ -64,6 +64,8 @@ class Users extends CI_Controller
 	 */
 	private function _edit($user_id, $section)
 	{
+		// TODO: move to admin/users/x/edit
+
 		// Check for invalid edit section
 		if (!in_array($section, array('general', 'groups', 'memberships')))
 		{
