@@ -21,13 +21,13 @@ class Users extends CI_Controller
 		// No arguments, show user overview
 		if ($this->uri->total_segments() === 1)
 		{
-			return call_user_func(array($this, '_overview'));
+			return $this->_overview();
 		}
 
 		// Single integer argument, user details
 		if (($this->uri->total_segments() === 2) && (ctype_digit($this->uri->segment(2))))
 		{
-			return call_user_func(array($this, '_details'), $this->uri->segment(2));
+			return $this->_details($this->uri->segment(2));
 		}
 
 		// User id plus command and any other optional parameters
@@ -36,8 +36,8 @@ class Users extends CI_Controller
 			switch ($this->uri->segment(3))
 			{
 				case 'edit':
-					$section = ($this->uri->segment(4) ?: 'general');
-					return call_user_func_array(array($this, '_edit'), array($this->uri->segment(2), $section));
+					$section = (($this->uri->segment(4) !== false) ? $this->uri->segment(4) : 'general');
+					return $this->_edit($this->uri->segment(2), $section);
 					break;
 			}
 		}
