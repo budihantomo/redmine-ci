@@ -7,8 +7,29 @@ class Account extends CI_Controller
 {
 	/**
 	 */
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->load->helper('url');
+		$this->load->model('AuthenticationModel');
+	}
+
+	/**
+	 */
 	public function login()
 	{
+		// If we're already logged in, redirect to /my
+		if ($this->AuthenticationModel->is_logged_in())
+		{
+			redirect('/my');
+		}
+
+//		if ($this->AuthenticationModel->login(array('login' => 'Admin', 'password' => 'admin')))
+//		{
+//			redirect('/my');
+//		}
+
 		echo 'login';
 	}
 
@@ -16,13 +37,20 @@ class Account extends CI_Controller
 	 */
 	public function logout()
 	{
-		echo 'logout';
+		$this->AuthenticationModel->logout();
+		redirect('/login');
 	}
 
 	/**
 	 */
 	public function register()
 	{
+		// If we're logged in, redirect to /my
+		if ($this->AuthenticationModel->is_logged_in())
+		{
+			redirect('/my');
+		}
+
 		echo 'register';
 	}
 

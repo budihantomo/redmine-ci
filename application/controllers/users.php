@@ -57,7 +57,7 @@ class Users extends CI_Controller
 	 */
 	private function _details($user_id)
 	{
-		echo 'user details ', $user_id;
+		echo 'user details with id ', $user_id;
 	}
 
 	/**
@@ -70,6 +70,6 @@ class Users extends CI_Controller
 			show_404();
 		}
 
-		echo 'edit user id ', $user_id, ', section ', $section;
+		echo 'edit user with id ', $user_id, ', section ', $section;
 	}
 }
