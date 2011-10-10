@@ -41,6 +41,12 @@
 $route['default_controller'] = "welcome";
 $route['404_override'] = '';
 
+// Account-related stuff belongs in class account
+$route['login'] = 'account/login';
+$route['logout'] = 'account/logout';
+$route['my/account'] = 'account/overview';
+$route['my/password'] = 'account/change_password';
+$route['my/reset_rss_key'] = 'account/reset_rss_key';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

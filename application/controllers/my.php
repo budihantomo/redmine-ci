@@ -3,12 +3,19 @@
  */
 /**
  */
-class Welcome extends CI_Controller
+class My extends CI_Controller
 {
 	/**
 	 */
 	public function index()
 	{
-		echo 'welcome - redirect to login if not logged in, else redirect to my page';
+		return $this->page();
+	}
+
+	/**
+	 */
+	public function page()
+	{
+		echo 'my page';
 	}
 }
