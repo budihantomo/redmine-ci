@@ -12,6 +12,7 @@ class AuthenticationModel extends CI_Model
 		parent::__construct();
 
 		$this->load->library('session');
+		$this->load->helper('url');
 	}
 
 	/**
@@ -95,7 +96,6 @@ class AuthenticationModel extends CI_Model
 		// Redirect to the login page if we're not logged in
 		if (!$this->is_logged_in())
 		{
-			$this->load->helper('url');
 			redirect('/login?back_url=' . urlencode(current_url()));
 		}
 	}
@@ -107,7 +107,6 @@ class AuthenticationModel extends CI_Model
 		// Redirect back if we're already logged in
 		if ($this->is_logged_in())
 		{
-			$this->load->helper('url');
 			redirect($url);
 		}
 	}

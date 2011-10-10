@@ -13,7 +13,7 @@ class My extends CI_Controller
 
 		$this->load->model('AuthenticationModel');
 
-		// Entire controller requires login
+		// Entire controller requires being logged in
 		$this->AuthenticationModel->require_login();
 	}
 

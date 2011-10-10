@@ -11,7 +11,7 @@ class Users extends CI_Controller
 	{
 		parent::__construct();
 
-		$this->load->helper('url');
+		$this->load->model('AuthenticationModel');
 	}
 
 	/**
