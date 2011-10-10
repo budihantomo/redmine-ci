@@ -99,4 +99,16 @@ class AuthenticationModel extends CI_Model
 			redirect('/login?back_url=' . urlencode(current_url()));
 		}
 	}
+
+	/**
+	 */
+	public function require_no_login($url = '/my')
+	{
+		// Redirect back if we're already logged in
+		if ($this->is_logged_in())
+		{
+			$this->load->helper('url');
+			redirect($url);
+		}
+	}
 }

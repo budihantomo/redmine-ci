@@ -19,16 +19,22 @@ class Account extends CI_Controller
 	 */
 	public function login()
 	{
-		// If we're already logged in, redirect to /my
-		if ($this->AuthenticationModel->is_logged_in())
-		{
-			redirect('/my');
-		}
+		// We can't login if we're already logged in
+		$this->AuthenticationModel->require_no_login();
 
-//		if ($this->AuthenticationModel->login(array('login' => 'Admin', 'password' => 'admin')))
-//		{
-//			redirect('/my');
-//		}
+/*
+		if ($this->AuthenticationModel->login(array('login' => 'Admin', 'password' => 'admin')))
+		{
+			if ($this->input->get('back_url') !== false)
+			{
+				redirect($this->input->get('back_url'));
+			}
+			else
+			{
+				redirect('/my');
+			}
+		}
+*/
 
 		echo 'login';
 	}
@@ -45,11 +51,8 @@ class Account extends CI_Controller
 	 */
 	public function register()
 	{
-		// If we're logged in, redirect to /my
-		if ($this->AuthenticationModel->is_logged_in())
-		{
-			redirect('/my');
-		}
+		// We can't register if we're logged in
+		$this->AuthenticationModel->require_no_login();
 
 		echo 'register';
 	}
@@ -58,6 +61,9 @@ class Account extends CI_Controller
 	 */
 	public function lost_password()
 	{
+		// We can't use the lost password feature if we're logged in
+		$this->AuthenticationModel->require_no_login();
+
 		echo 'lost password';
 	}
 

@@ -35,5 +35,6 @@ class My extends CI_Controller
 	 */
 	public function page_layout()
 	{
+		echo 'edit my page layout';
 	}
 }
