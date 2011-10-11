@@ -21,21 +21,31 @@ class Account extends CI_Controller
 		// We can't login if we're already logged in
 		$this->AuthenticationModel->require_no_login();
 
-/*
-		if ($this->AuthenticationModel->login(array('login' => 'Admin', 'password' => 'admin')))
-		{
-			if ($this->input->get('back_url') !== false)
-			{
-				redirect($this->input->get('back_url'));
-			}
-			else
-			{
-				redirect('/my');
-			}
-		}
-*/
+		$data = array();
 
-		echo 'login';
+		// Check if user submitted the login form
+		if (
+			// Form submit
+			($this->input->post('login') !== false)
+			// And valid credentials
+			&& ($this->AuthenticationModel->login(array(
+				'login' => $this->input->post('username'),
+				'password' => $this->input->post('password')
+			)) !== false)
+		)
+		{
+			// Loggin succesful, redirect to /my
+			redirect('/my');
+		}
+		else
+		{
+			// No login, show login form
+			$this->load->view('_page', array(
+				'head_title' => 'Redmine-CI',
+				'head_canonical' => base_url('login'),
+				'content' => $this->load->view('account/login', $data, TRUE)
+			));
+		}
 	}
 
 	/**
