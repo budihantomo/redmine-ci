@@ -1,21 +1,27 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
+ * Authentication model file for Redmine-CI
+ *
+ * @package Redmine-CI
+ * @author  WaveHack <email@wavehack.net>
  */
 /**
+ * Provides methods for handling authentication.
+ *
+ * Methods {@link require_login()} and {@link require_no_login()} should
+ * preferably be called in the controller constructors to ensure authentication
+ * for all their methods.
+ *
+ * @package Redmine-CI
+ * @subpackage Models
  */
 class AuthenticationModel extends CI_Model
 {
 	/**
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-
-		$this->load->library('session');
-		$this->load->helper('url');
-	}
-
-	/**
+	 * Performs a login with the provided login and password details.
+	 *
+	 * @param array $data
+	 * @return bool
 	 */
 	public function login($data)
 	{
@@ -26,13 +32,12 @@ class AuthenticationModel extends CI_Model
 		}
 
 		// Hash our password with optional salt defined in /application/config/redmine-ci.php
-		$this->config->load('redmine-ci');
 		$hashed_password = sha1($this->config->item('auth_password_salt') . $data['password']);
 
 		// Select from database
 		$this->db->select('id,firstname,lastname');
 		$this->db->where('login', $data['login']);
-		$this->db->where('hashed_password', $hashed_password); // todo: add salt
+		$this->db->where('hashed_password', $hashed_password);
 		$this->db->where('status', 1);
 		$query = $this->db->get('users');
 
@@ -58,6 +63,7 @@ class AuthenticationModel extends CI_Model
 	}
 
 	/**
+	 * Logs the user out if the user is logged in
 	 */
 	public function logout()
 	{
@@ -73,12 +79,21 @@ class AuthenticationModel extends CI_Model
 	}
 
 	/**
+	 * todo
+	 *
+	 * @see UserModel::register()
+	 * @param array $data
+	 * @return bool
 	 */
 	public function register($data)
 	{
+		// todo
 	}
 
 	/**
+	 * Returns whether the user is currently logged in
+	 *
+	 * @return bool
 	 */
 	public function is_logged_in()
 	{
@@ -90,17 +105,28 @@ class AuthenticationModel extends CI_Model
 	}
 
 	/**
+	 * Requires the user to be logged in, redirecting to /login if not
+	 *
+	 * @param bool $force Force login even if require_login settings is 0
+	 * @param bool $use_back_url Use back URL to redirect to after logging in
 	 */
-	public function require_login()
+	public function require_login($force = true, $use_back_url = true)
 	{
 		// Redirect to the login page if we're not logged in
-		if (!$this->is_logged_in())
+		if (
+			($force && !$this->is_logged_in())
+			|| (!$this->is_logged_in() && $this->SettingModel->get_setting('login_required'))
+		)
 		{
-			redirect('/login?back_url=' . urlencode(current_url()));
+			redirect('/login' . ($use_back_url ? ('?back_url=' . urlencode(current_url())) : ''));
 		}
 	}
 
 	/**
+	 * Requires the user not to be logged in on the current page. Does not
+	 * automatically log out the user, but redirects back to $url.
+	 *
+	 * @param string $url URL to redirect to if the user is logged in
 	 */
 	public function require_no_login($url = '/my')
 	{

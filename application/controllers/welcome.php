@@ -10,16 +10,14 @@ class Welcome extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
-
-		$this->load->model('AuthenticationModel');
 	}
 
 	/**
 	 */
 	public function index()
 	{
-		// If we're not logged in, redirect to the login page
-		$this->AuthenticationModel->require_login();
+		// If login is required and we're not logged in, redirect to login page
+		$this->AuthenticationModel->require_login(false, false);
 
 		// We're logged in (since above line didn't redirect to login). Original
 		// Redmine calls /my internally here, but we can't do that because we
