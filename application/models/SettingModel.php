@@ -51,8 +51,8 @@ class SettingModel extends CI_Model
 		if ($this->_use_cache)
 		{
 			$this->load->driver('cache', array(
-					'adapter' => $this->config->item('settings_cache_adapter'),
-					'backup' => $this->config->item('settings_cache_backup')
+				'adapter' => nfalse_var($this->config->item('settings_cache_adapter'), 'apc'),
+				'backup'  => nfalse_var($this->config->item('settings_cache_backup'), 'file')
 			));
 
 			$this->_cache_ttl = $his->config->item('settings_cache_ttl');
@@ -64,14 +64,16 @@ class SettingModel extends CI_Model
 	/**
 	 * Returns a setting. Throws a notice if the setting doesn't exist.
 	 *
-	 * Settings returned are always strings, and should be treated and compared
-	 * with as such.
+	 * Settings returned are strings, and should be treated and compared with as
+	 * such, except if $unserialize is true and the string is serialized, then
+	 * it returns an unserialized array from string.
 	 *
 	 * @todo Add option for unserialization?
 	 * @param string $setting Setting name
+	 * @param bool $unserialize Unserialize setting
 	 * @return string|null
 	 */
-	public function get_setting($setting)
+	public function get_setting($setting, $unserialize = false)
 	{
 		// If setting doesn't exist, throw a notice and return null
 		if (!isset($this->_settings[$setting]))
@@ -80,7 +82,11 @@ class SettingModel extends CI_Model
 			return null;
 		}
 
-		return $this->_settings[$setting];
+		return (
+			$unserialize
+				? unserialize($this->_settings[$setting])
+				: $this->_settings[$setting]
+		);
 	}
 
 	/**
@@ -116,7 +122,7 @@ class SettingModel extends CI_Model
 			// Check if we want to cache the results
 			if ($this->_use_cache)
 			{
-				$this->cache->save('settings', $this->_settings, 3600);
+				$this->cache->save('settings', $this->_settings, $this->_cache_ttl);
 				$this->_repopulated_cache = true;
 			}
 		}
